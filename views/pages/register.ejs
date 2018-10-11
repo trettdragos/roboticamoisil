@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <link href="/vendor/bootstrap-tagsinput/tagsinput.css" rel="stylesheet"/>
+    <style>
+        .error {
+            color: red;
+            border-color: red;
+        }
+    </style>
+</head>
+
+<body>
+<% include ../partials/login-register-header.ejs %>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 style="text-align: center; margin-bottom: 15px;"><b>Register</b></h4>
+                    <form class="form-signin" id="form">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordCheck">Check Password</label>
+                            <input type="password" id="passwordCheck" name="passwordCheck" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="github">GitHub Link</label>
+                            <i class="fab fa-github prefix"></i>
+                            <input type="url" id="github" name="github" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="linkedin">LinkedIn Link</label>
+                            <i class="fab fa-linkedin prefix"></i>
+                            <input type="url" id="linkedin" name="linkedin" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="skillsInput">Skills</label>
+                            <input type="text" id="skillsInput" class="form-control" data-role="tagsinput">
+                        </div>
+                        <div class="g-recaptcha" data-sitekey="6LfoYGgUAAAAAI57MspAbR0DdLMxqGpqAHvg5syn"></div>
+                        <button class="btn btn-lg btn-block btn-register" type="button" id="submit">
+                            Register<i class="fas fa-user"></i></button>
+                    </form>
+                    <div class="pt-1">
+                        <small class="text-center text-muted">Already have an account?
+                            <a href="/login" class="font-weight-bold link-unstyled">Log In</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<% include ../partials/footer.ejs %>
+<script>
+    let user = $.cookie('username');
+    if (user) {
+        $('#list').append('<li class="nav-item"><a class="nav-link" href="/dashboard">Search <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/projects">Projects <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/settings">Settings <i class="fas fa-cogs"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a></li>');
+    } else {
+        $('#list').append('<li class="nav-item"><a class="nav-link" href="/dashboard">Search <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/register">Sign Up <i class="fas fa-user-plus"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/login">Login <i class="fas fa-sign-in-alt"></i></a></li>');
+    }
+</script>
+<script src="/vendor/bootstrap-tagsinput/tagsinput.js"></script>
+
+<script>
+
+    $("#submit").on('click', function () {
+        console.log("registering");
+        if (!registerValidator.form())
+            return;
+        console.log("seccond");
+        let user = {
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            name: document.getElementById('fullName').value,
+            linkedin: document.getElementById('linkedin').value,
+            github: document.getElementById('github').value,
+            skills: $("#skillsInput").tagsinput('items'),
+            grecaptcharesponse: grecaptcha.getResponse()
+        }
+        $.ajax({
+            data: user,
+            type: 'POST',
+            url: 'http://localhost:3000/register/auth',
+            success: function (res) {
+                console.log(res.status);
+                if (res.status == "successful") {
+                    window.location.href = '/register/confirmed';
+                } else {
+                    grecaptcha.reset();
+                    if (res.status == 'recaptcha invalid') {
+                        $('.g-recaptcha').find('iframe').first().css('box-sizing', 'border-box').css('-moz-box-sizing', 'border-box').css('-webkit-box-sizing', 'border-box').css('border', '2px solid red');
+                    } else {
+                        document.getElementById("email").style.borderColor = "red";
+                    }
+                }
+            }
+        });
+    });
+
+    let registerValidator = $("#form").validate({
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/g
+            },
+            passwordCheck: {
+                equalTo: '#password'
+            },
+            fullName: {
+                required: true,
+            },
+            github: {
+                required: false,
+                url: true,
+                regex: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|www\.)?github\.com\/(.*)[a-zA-Z0-9].*/
+            },
+            linkedin: {
+                required: false,
+                url: true,
+                regex: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|www\.)?linkedin\.com\/in\/(.*)[a-zA-Z0-9\-].*/
+            }
+        },
+        messages: {
+            email: {
+                required: "Email is required",
+                email: "Email must be a valid email"
+            },
+            password: {
+                required: "Password is required",
+                regex: "Password must contain <span title='A lowercase character, a uppercase character, a digit, a special symbol and at least 8 characters'><i class='far fa-question-circle'></i></span>"
+            },
+            passwordCheck: {
+                equalTo: "Check Password must be the same as Password",
+            },
+            fullName: {
+                required: "Full Name is required",
+            },
+            github: {
+                url: "GitHub Link must be an URL",
+                regex: 'You must provide an actual GitHub URL'
+            },
+            linkedin: {
+                url: "LinkedIn Link must be an URL",
+                regex: 'You must provide an actual LinkedIn URL'
+            }
+        }
+    });
+</script>
+</body>
+
+</html>

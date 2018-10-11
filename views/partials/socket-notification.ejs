@@ -1,0 +1,12 @@
+<script src="/notify.js"></script>
+<script type="text/javascript">
+	if($.cookie('username')){
+		let socket = io.connect();
+		socket.on('request email', function(){
+			socket.emit('receive email', {email:$.cookie('username')});
+		});
+		socket.on('notification', function(notification){
+			$.notify(notification, "info");
+		});
+	}
+</script>

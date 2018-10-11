@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <link href="/vendor/bootstrap-tagsinput/tagsinput.css" rel="stylesheet"/>
+
+    <link href="/vendor/bootstrap-datepicker.standalone.min.css" rel="stylesheet" type="text/css"/>
+    <style>
+        .toggled {
+            background-color: #00A86B !important;
+            color: white !important;
+        }
+
+        .toggled:hover {
+            background-color: #00b875 !important;
+            color: white !important;
+        }
+    </style>
+</head>
+
+<body>
+<% include ../partials/header.ejs %>
+<form>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="jumbotron" style="margin-top: 10px;">
+                    <h2><b>Tell Us About Your Team</b></h2>
+                    <div class="form-group">
+                        <label for="project Name">Team Name</label>
+                        <input type="text" class="form-control" id="teamName" placeholder="Enter team name">
+                    </div>
+                    <hr class="my-4">
+                    <div class="form-group">
+                        <label for="comment">Team's Purpose</label>
+                        <small id="summarise" class="form-text text-muted"><i class="fas fa-info-circle mr-2"></i>What are you creating the team for?</small>
+                        <textarea class="form-control" rows="5" id="purpose"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="resource_link">Resource URL</label>
+                        <input title="Resource URL" placeholder="Example: https://www.github.com/your_account/your_repository/" class="form-control" id="resource_link"/>
+                    </div>
+                </div>
+                <div class="jumbotron" style="margin-top: 10px;">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">To what Hackaton do you intend to participate with
+                                your team?</label>
+                            <input type="text" class="form-control" id="hackaton" placeholder="Hackaton">
+                            <hr class="my-4">
+                            <label for="exampleFormControlSelect1">And section?</label>
+                            <input type="text" class="form-control" id="hackatonSection" placeholder="section">
+                            <hr class="my-4">
+                            <div class="date-range">
+                                <div class="row text-center">
+                                    <div class="col-6">Starting on</div>
+                                    <div class="col-6">Ending on</div>
+                                </div>
+                                <div class="input-daterange input-group" id="datepicker">
+                                    <input type="text" class="input-sm form-control" id="date_start" name="date_start"/>
+                                    <input type="text" class="input-sm form-control" id="date_end" name="date_end"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <div class="form-group">
+                        <h4 id="platform">What Platform Will Your Project Be Built On?</h4>
+                        <div class="md-form">
+                            <input title="skills" type="text" id="platformsInput" class="form-control" data-role="tagsinput">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="jumbotron" style="margin-top: 10px;">
+                    <button class="btn btn-lg btn-block font-weight-bold" id="submit" type="button" style="font-size: 200%">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<% include ../partials/footer.ejs %>
+<script src="/vendor/bootstrap-tagsinput/tagsinput.js"></script>
+<% include ../partials/socket-notification.ejs %>
+<script src="/vendor/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script>
+    $('.date-range .input-daterange').datepicker({
+        format: "dd/mm/yyyy",
+        startDate: '-3d',
+        clearBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    });
+</script>
+<script>
+    $(function () {
+        let tagsInput = $('.bootstrap-tagsinput > input')[0];
+        $(tagsInput).on('change paste keyup', function () {
+            $(tagsInput).val($(tagsInput).val().replace(/"/g, '\''));
+        })
+        $('.platform-toggle-button').on('click', function () {
+            if ($(this).hasClass('toggled')) $(this).removeClass('toggled');
+            else $(this).addClass('toggled');
+        });
+    })
+    let socket = io.connect();
+    $("#submit").on('click', function () {
+        submitTeam();
+    });
+
+    function submitTeam() {
+
+        let team = {
+            name: document.getElementById('teamName').value,
+            summary: document.getElementById('purpose').value,
+            resource_link: $('#resource_link').val(),
+            hackaton: document.getElementById('hackaton').value,
+            section: document.getElementById('hackatonSection').value,
+            startDate: $('#date_start').datepicker('getDate').getTime(),
+            endDate: $('#date_end').datepicker('getDate').getTime(),
+            platforms: $("#platformsInput").tagsinput('items'),
+            nrMembers: 1,
+            posts: '',
+            leader: $.cookie('username')
+        }
+        let isFormOk = true;
+        if (team.name === '') {
+            isFormOk = false;
+            document.getElementById('teamName').style.borderColor = "red";
+        } else {
+            document.getElementById('teamName').style.borderColor = "green";
+        }
+        if (team.summary === '') {
+            isFormOk = false;
+            document.getElementById('purpose').style.borderColor = "red";
+        } else {
+            document.getElementById('purpose').style.borderColor = "green";
+        }
+        if (team.hackaton === '') {
+            isFormOk = false;
+            document.getElementById('hackaton').style.borderColor = "red";
+        } else {
+            document.getElementById('hackaton').style.borderColor = "green";
+        }
+        if (team.section === '') {
+            isFormOk = false;
+            document.getElementById('hackatonSection').style.borderColor = "red";
+        } else {
+            document.getElementById('hackatonSection').style.borderColor = "green";
+        }
+        if (team.startDate === '') {
+            isFormOk = false;
+            document.getElementById('date_start').style.borderColor = "red";
+        } else {
+            document.getElementById('date_start').style.borderColor = "green";
+        }
+        if (team.endDate === '') {
+            isFormOk = false;
+            document.getElementById('date_end').style.borderColor = "red";
+        } else {
+            document.getElementById('date_end').style.borderColor = "green";
+        }
+        if (isFormOk)
+            $.ajax({
+                data: team,
+                type: 'GET',
+                url: 'http://localhost:3000/teams/register',
+                success: function (res) {
+                    console.log(res.status);
+                    if (res.status === 'successful')
+                        window.location.href = '/teams';
+                    else alert(res.status);
+                }
+            });
+        //socket.emit('register team', team);
+    }
+
+    $("#form").keyup(function (event) {
+        if (event.keyCode === 13) {
+            $("#submit").click();
+        }
+    });
+</script>
+
+</body>
+
+</html>

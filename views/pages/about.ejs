@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <link href="/landing-page.css" rel="stylesheet">
+</head>
+
+<body>
+<% include ../partials/login-register-header %>
+<div class="container-fluid about-container-top elegant-gradient-lu-rd">
+    <div class="row px-lg-0 px-sm-5 px-0 pt-0 pt-lg-4">
+        <div class="col-xl-6 col-lg-8 col-12 mx-auto mt-0 mt-lg-5 ">
+            <h1 class="d-none d-md-block mt-5 text-center text-white">What is HackSquad?</h1>
+            <h3 class="d-block d-md-none mt-5 text-center text-white">What is HackSquad?</h3>
+            <p class="d-none d-md-block lead text-justify text-white">HackSquad is a web platform designed for people
+                who want to test
+                their programming knowledge or to put an idea into action. HackSquad aims to create a connection between
+                two or more people, be them programmers, designers or very creative people. The platform provides the
+                ability to search for people in order to build a project or participate in a Hackaton, unlike similar
+                platforms which only support the creation of projects.</p>
+            <p class="d-block d-md-none text-justify text-white">HackSquad is a web platform designed for people who
+                want to test
+                their programming knowledge or to put an idea into action. HackSquad aims to create a connection between
+                two or more people, be them programmers, designers or very creative people. The platform provides the
+                ability to search for people in order to build a project or participate in a Hackaton, unlike similar
+                platforms which only support the creation of projects.</p>
+        </div>
+    </div>
+    <!--<div class="row px-lg-0 px-sm-5 px-0 pt-0 pt-lg-1 pb-3 pb-lg-4">
+        <div class="col-xl-6 col-lg-8 col-12 mx-auto mt-0 mt-lg-1 mb-3 mb-lg-4">
+            <div class="row">
+                <div class="col-12 col-lg-6 mb-4">
+                    <div class="card h-100 bg-transparent">
+                        <div class="card-body">
+                            <h2 class="card-title text-white">Projects</h2>
+                            <p class="card-text text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni
+                                quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6  mb-4">
+                    <div class="card h-100 bg-transparent">
+                        <div class="card-body">
+                            <h2 class="card-title text-white">Hackatons</h2>
+                            <p class="card-text text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur
+                                ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id
+                                dolore voluptates quos eligendi labore.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <div class="row px-lg-0 px-5 pb-5">
+        <div class="col-xl-6 col-lg-8 col-12 mx-auto mb-0 mb-lg-5 pb-5 pb-md-0" id="get_started_button">
+            <!--<h1 class="d-none d-md-block my-5 pb-5 text-center text-white">Get Started!</h1>-->
+            <!--<h3 class="d-block d-md-none my-5 pb-5 text-center text-white">Get Started!</h3>-->
+            <div class="content mt-5 pb-5 pb-md-0">
+                <svg id="more-arrows">
+                    <polygon class="arrow-top" points="37.6,27.9 1.8,1.3 3.3,0 37.6,25.3 71.9,0 73.7,1.3 "></polygon>
+                    <polygon class="arrow-middle" points="37.6,45.8 0.8,18.7 4.4,16.4 37.6,41.2 71.2,16.4 74.5,18.7 "></polygon>
+                    <polygon class="arrow-bottom" points="37.6,64 0,36.1 5.1,32.8 37.6,56.8 70.4,32.8 75.5,36.1 "></polygon>
+                </svg>
+            </div>
+            <!--<button class="btn btn-block btn-lg btn-rounded get-started-button" id="get_started_button">Get Started</button>-->
+        </div>
+    </div>
+</div>
+<section class="container-fluid mt-5 pl-5 pr-5 pl-xl-3 pr-xl-3" id="getting_started_section">
+    <h1 class="text-center" style="color: #2E2E2E;">Getting Started</h1>
+    <div class="row">
+        <div class="col-12 col-xl-4 mb-4">
+            <div class="card card-image mb-3 h-100 elegant-gradient-ld-ru">
+
+                <!-- Content -->
+                <div class="text-white text-center d-flex align-items-center py-5 px-4 h-100">
+                    <div>
+                        <h5 class="elegant-color-text">First Steps</h5>
+                        <h3 class="card-title pt-2"><strong>Create an account</strong></h3>
+                        <p>The first thing to do before you can start using HackSquad is to create an account. This is a straightforward and easy step that will take less than a minute.</p>
+                        <a class="btn btn-pink get-started-button" href="/register"><i class="fas fa-user-plus"></i>&nbsp;Create an account</a>
+                    </div>
+                </div>
+                <!-- Content -->
+            </div>
+        </div>
+        <div class="col-12 col-xl-4 mb-4">
+            <div class="card card-image mb-3 h-100 elegant-gradient-ld-ru">
+
+                <!-- Content -->
+                <div class="text-white text-center d-flex align-items-center py-5 px-4 h-100">
+                    <div>
+                        <h5 class="elegant-color-text">First Steps</h5>
+                        <h3 class="card-title pt-2"><strong>Finish your profile</strong></h3>
+                        <p>After registering an account and activating it from the email we just sent you, the next step is to login and finish setting up your profile by updating it with relevant skills and a short description about you. This will help other people decide if you are the right person for their team.</p>
+                        <a class="btn get-started-button" href="/login"><i class="fas fa-cogs"></i>&nbsp;Update profile</a>
+                    </div>
+                </div>
+                <!-- Content -->
+            </div>
+        </div>
+        <div class="col-12 col-xl-4 mb-4">
+            <div class="card card-image mb-3 h-100 elegant-gradient-ld-ru">
+
+                <!-- Content -->
+                <div class="text-white text-center d-flex align-items-center py-5 px-4 h-100">
+                    <div>
+                        <h5 class="elegant-color-text">What's Next</h5>
+                        <h3 class="card-title pt-2"><strong>Join or create a team</strong></h3>
+                        <p class="text-center">Now you can fully experience what HackSquad has to offer by joining or creating a team, either for a project or a hackaton, chat with our members and learn a lot in the process.</p>
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-xl-12 pb-3 pb-sm-0 pb-xl-3">
+                                <a class="btn btn-block get-started-button" href="/projects">Projects</a>
+                            </div>
+                            <div class="col-12 col-sm-6 col-xl-12">
+                                <a class="btn btn-block get-started-button" href="/teams">Hackatons</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Content -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<% include ../partials/footer.ejs %>
+<script>
+    $(window).on("scroll load resize", function () {
+        updateNavbar();
+    });
+    $("#get_started_button").on('click', () => {
+        $('html,body').animate({
+                scrollTop: $("#getting_started_section").offset().top - 50
+            },
+            800);
+    });
+
+    let updateNavbar = () => {
+        let startY = $('.about-container-top').height() - 55;
+        if ($(window).scrollTop() > startY) {
+            $('nav').addClass("bg-dark").removeClass('bg-transparent').removeClass('no-shadow');
+        } else {
+            $('nav').addClass("bg-transparent").removeClass('bg-dark').addClass('no-shadow');
+        }
+    }
+</script>
+<script>
+    let user = $.cookie('username');
+    if (user) {
+        $('#list').append('<li class="nav-item"><a class="nav-link" href="/dashboard">Search <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/projects">Projects <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/teams">Teams <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/profile">Profile <i class="fas fa-cogs"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a></li>');
+    } else {
+        $('#list').append('<li class="nav-item"><a class="nav-link" href="/dashboard">Search <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/register">Sign Up <i class="fas fa-user-plus"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/login">Login <i class="fas fa-sign-in-alt"></i></a></li>');
+    }
+</script>
+</body>
+
+</html>

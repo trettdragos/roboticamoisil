@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <style type="text/css">
+        .jumbotron {
+            box-shadow: 2px 8px 16px -8px black;
+            padding: 1%;
+        }
+
+        .profile {
+            /*height: 300px;*/
+            /*display: inline-block;*/
+            height: auto;
+        }
+
+        span.tags {
+            background: #ffffff;
+            border-radius: 2px;
+            color: #000;
+            font-weight: bold;
+            padding: 2px 4px;
+        }
+
+        span.tags.teal {
+            background: #1abc9c;
+            color: #f5f5f5
+        }
+
+        span.tags.red {
+            background: #e52d27;
+            color: #f5f5f5
+        }
+
+        .img-circle {
+            max-width: 200px;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+        }
+
+        .link-unstyled, .link-unstyled:link, .link-unstyled:hover {
+            color: inherit;
+            text-decoration: inherit;
+        }
+        .reputation.red {
+            color: red;
+        }
+        .reputation.green {
+            color: green;
+        }
+        .reputation.yellow {
+            color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+<% include ../partials/header.ejs %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 text-center text-lg-left">
+            <div class="card">
+                <div class="row profile align-items-center px-5">
+                    <div class="col-12 col-lg-7 order-11 order-sm-11 order-md-11 order-lg-1">
+                        <h2><%= name %></h2>
+
+                        <% if (profile.ABOUT) { %>
+                        <p><strong>About: </strong> <%= profile.ABOUT %> </p>
+                        <% } %>
+                        <p><strong>Email: </strong> <%= email %> </p>
+
+                        <% if (profile.SKILLS.length > 0) { %>
+                        <p><strong>Skills: </strong>
+                            <% profile.SKILLS.forEach((skill) => { %>
+                            <span class="tags teal"><%= skill %></span>
+                            <% }) %>
+                        </p>
+                        <% } %>
+                        <% if (profile.GITHUB || profile.LINKEDIN) { %>
+                        <p><strong>Links: </strong>
+                            <% if(profile.GITHUB) { %>
+                            <span class="tags red"><a class="link-unstyled" href="<%= profile.GITHUB %>"
+                                                      target="_blank">GITHUB
+                                    <i class="fab fa-lg fa-github-square" style="font-weight: normal;"></i></a></span>
+                            <% } %>
+                            <% if(profile.LINKEDIN) { %>
+                            <span class="tags red"><a class="link-unstyled" href="<%= profile.LINKEDIN %>"
+                                                      target="_blank">LINKEDIN
+                                    <i class="fab fa-lg fa-linkedin" style="font-weight: normal;"></i></a></span>
+                            <% } %>
+                        </p>
+                        <% } %>
+
+                        <p><strong>Reputation: </strong>
+                            <span class="reputation <%if(reputation < 0) {%>red<%} else if(reputation == 0) {%>amber<% } else {%>green<%}%>-text"><%= reputation %></span>
+                        </p>
+
+                    </div>
+                    <div class="col-12 col-lg-5 order-1 order-sm-1 order-md-1 order-lg-11 text-center text-lg-right">
+                        <img src="<% if(profile.PROFILE_PICTURE){ %> <%= profile.PROFILE_PICTURE %> <% } else { %>https://identicon-api.herokuapp.com/<%= email %>/512?format=png<% } %>"
+                             alt=""
+                             class="img-circle img-responsive center-block">
+                    </div>
+                </div>
+                <% if(username == email) { %>
+                <div class="col-12 order-12">
+                    <a class="btn btn-block btn-primary" href="/profile/edit">Edit profile</a>
+                </div>
+                <% } else { %>
+                <div class="col-12 order-12">
+                    <a class="btn btn-block btn-primary" href="/profile/<%= email %>/chat">Private chat</a>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <%
+    let count = 0;
+    notifications.forEach((notification) => {
+       if(notification.vis === "false")
+           count+=1;
+    });
+    %>
+    <% if(username == email && count) { %>
+    <div class="row my-3">
+        <div class="col-lg-12 text-left">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Notifications:</h4>
+                    <hr class="my-4">
+                    <% for(i in notifications){ %>
+                    <% if(notifications[i].vis === "false"){ %>
+                    <div class="row">
+                        <div class="col-lg-2 col-6">
+                            <button class="btn btn-block accept-notification" data-notification-id="<%= notifications[i].id %>" data-notification-type="<%= notifications[i].type %>"
+                                    data-notification-name="<%= notifications[i].data.UUID %>" data-notification-user="<%= notifications[i].user.EMAIL %>">Accept</button>
+                        </div>
+                        <div class="col-lg-2 col-6">
+                            <button class="btn btn-block refuse-notification" data-notification-id="<%= notifications[i].id %>" data-notification-type="<%= notifications[i].type %>"
+                                    data-notification-name="<%= notifications[i].data.UUID %>" data-notification-user="<%= notifications[i].user.EMAIL %>">Refuse</button>
+                        </div>
+                        <div class="col-lg-8 col-xs-12 pt-3 pt-lg-0">
+                            <h4>User <span class="font-weight-bold"><a href="/profile/<%= notifications[i].user.EMAIL %>"><%= notifications[i].user.USERNAME %></a> (Rep: <span class="reputation <%if(notifications[i].user.REPUTATION < 0) {%>red<%} else if(notifications[i].user.REPUTATION == 0) {%>amber<% } else {%>green<%}%>-text"><%= notifications[i].user.REPUTATION %></span>)</span> wants to join <%= notifications[i].type %> <span class="font-weight-bold"><a href="/<%= notifications[i].type %>s/<%=notifications[i].data.BASE64%>"><%= notifications[i].data.NAME %></a></span></h4>
+                        </div>
+                    </div>
+                    <% }} %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
+    <div class="row my-3">
+        <div class="col-lg-12 text-left">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><b><% if(username == email){ %>Your <% } else { %><%= name %>'s<% } %>Projects:</b></h4>
+                    <hr class="mb-4 mt-1">
+                    <% for(i in projects){ %>
+                    <div class="row">
+                        <div class="col-lg-12 text-left">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title display-6"><b><%= projects[i].NAME %></b></h4>
+                                    <hr class="my-4">
+                                    <h5><%= projects[i].SUMMARY %></h5>
+                                    <a href="/projects/<%= projects[i].BASE64 %>" style="color: #00e500" class="d-flex flex-row-reverse p-2">
+                                        <p class="waves-effect waves-light px-4 py-3 z-depth-1-half" style="background-color: #343a40;">Learn more<i class="fas fa-angle-double-right ml-2"></i></p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row my-3">
+        <div class="col-lg-12 text-left">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><b><% if(username == email){ %>Your <% } else { %><%= name %>'s<% } %>Teams:</b></h4>
+                    <hr class="mb-4 mt-1">
+                    <% for(i in teams){ %>
+                    <div class="row">
+                        <div class="col-lg-12 text-left">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title display-6"><b><%= teams[i].NAME %></b></h4>
+                                    <hr class="my-4">
+                                    <h5><%= teams[i].SUMMARY %></h5>
+                                    <a href="/teams/<%= teams[i].BASE64 %>" style="color: #00e500" class="d-flex flex-row-reverse p-2">
+                                        <p class="waves-effect waves-light px-4 py-3 z-depth-1-half" style="background-color: #343a40;">Learn more<i class="fas fa-angle-double-right ml-2"></i></p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer.ejs %>
+<script>
+    let socket = io.connect();
+    $('.accept-notification').on('click', function () {
+        let notif = {
+            status: 'accept',
+            id: $(this).data('notification-id'),
+            type: $(this).data('notification-type'),
+            name: $(this).data('notification-name'),
+            requester: $(this).data('notification-user'),
+            leader: $.cookie('username')
+        };
+        $.ajax({
+            data: notif,
+            type: 'GET',
+            url: 'http://localhost:3000/profile/answer',
+            success: function (res) {
+                console.log(res.status);
+                if (res.status == "successful") {
+                    window.location.reload();
+                }
+            }
+        });
+    });
+    $('.refuse-notification').on('click', function () {
+        let notif = {
+            status: 'refuse',
+            id: $(this).data('notification-id'),
+            type: $(this).data('notification-type'),
+            name: $(this).data('notification-name'),
+            requester: $(this).data('notification-user'),
+            leader: $.cookie('username')
+        };
+        $.ajax({
+            data: notif,
+            type: 'GET',
+            url: 'http://localhost:3000/profile/answer',
+            success: function (res) {
+                console.log(res.status);
+                if (res.status == "successful") {
+                    window.location.reload();
+                }
+            }
+        });
+
+    });
+</script>
+
+</body>
+
+</html>

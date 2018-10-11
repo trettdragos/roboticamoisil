@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <link href="/vendor/bootstrap-tagsinput/tagsinput.css" rel="stylesheet"/>
+
+    <style type="text/css">
+        #changePasswordResponse, #changeLinksResponse {
+            opacity: 0;
+            display: none;
+            height: 0;
+        }
+
+        #changePasswordResponse.PROFILE-shown, #changeLinksResponse.PROFILE-shown {
+            opacity: 1;
+            display: block;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+<% include ../partials/header.ejs %>
+<div class="container">
+    <br class="my-3">
+    <section class="forms">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div id="changeLinks" class="card rounded-0 align-self-center">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h1 class="text-orange display-5">Edit Project <b id="project_name"><%= project.NAME %></b>
+                            </h1>
+                        </div>
+                        <div id="changeLinksContent" class="card-body" role="tabpanel">
+                            <h1 id="changeLinksResponse">Internal Server Error</h1>
+                            <div class="row">
+                                <div class="col-md-12 mx-auto">
+                                    <form id="changeLinksForm">
+                                        <div class="form-group">
+                                            <label for="about">About</label>
+                                            <textarea class="form-control" rows="5" id="summary"><%= project.SUMMARY %></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="resource_link">Resource URL</label>
+                                            <input title="Resource URL" value="<%= project.RESOURCE_LINK %>" placeholder="Example: https://www.github.com/your_account/your_repository/" class="form-control" id="resource_link"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Commitment</label>
+                                            <select class="form-control" id="commitmentLevel">
+                                                <option <%if(project.COMMITMENT === "Contractual"){%> selected="selected" <%}%>>Contractual</option>
+                                                <option <%if(project.COMMITMENT === "Part-time"){%> selected="selected" <%}%>>Part-time</option>
+                                                <option <%if(project.COMMITMENT === "Full-time"){%> selected="selected" <%}%>>Full-time</option>
+                                                <option <%if(project.COMMITMENT === "Co-founder"){%> selected="selected" <%}%>>Co-founder</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="linkedinLink">Stage</label>
+                                            <select class="form-control" id="stage">
+                                                <option <%if(project.STAGE === "Idea Stage"){%> selected="selected" <%}%>>Idea Stage</option>
+                                                <option <%if(project.STAGE === "Prototype Already Built"){%> selected="selected" <%}%>>Prototype Already Built</option>
+                                                <option <%if(project.STAGE === "Live Version Available"){%> selected="selected" <%}%>>Live Version Available</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="budget">Budget Range</label>
+                                            <select class="form-control" id="budget">
+                                                <option <%if(project.BUDGET === "$0-$1,000"){%> selected="selected" <%}%>>$0-$1,000</option>
+                                                <option <%if(project.BUDGET === "$1,000-$5,000"){%> selected="selected" <%}%>>$1,000-$5,000</option>
+                                                <option <%if(project.BUDGET === "$5,000-$10,000"){%> selected="selected" <%}%>>$5,000-$10,000</option>
+                                                <option <%if(project.BUDGET === "$10,000-$25,000"){%> selected="selected" <%}%>>$10,000-$25,000</option>
+                                                <option <%if(project.BUDGET === "$25,000-$50,000"){%> selected="selected" <%}%>>$25,000-$50,000</option>
+                                                <option <%if(project.BUDGET === "$50,000-$100,000"){%> selected="selected" <%}%>>$50,000-$100,000</option>
+                                                <option <%if(project.BUDGET === "$100,000+"){%> selected="selected" <%}%>>$100,000+</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <h4>Do you have funding?
+                                                <input type="checkbox" id="funding" data-toggle="toggle" <% if(project.FUNDING == 'true' || project.FUNDING == '1'){ %>checked="checked"<%}%>>
+                                            </h4>
+                                        </div>
+                                        <div class="form-group">
+                                            <h4 id="platform">What Platform Will Your Project Be Built On?</h4>
+                                            <div class="md-form">
+                                                <select title="platforms" multiple id="platformsInput" class="form-control" data-role="tagsinput">
+                                                    <% JSON.parse(project.PLATFORMS).forEach((platform) => { %>
+                                                    <option value='<%= platform.replace(/"/g, '\'') %>'><%= platform.replace(/"/g, '\'') %></option>
+                                                    <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <h1>Members:</h1>
+                            <% if(project.COLLABORATORS){ %>
+                            <% let collaborators = project.COLLABORATORS.trim().substr(0, project.COLLABORATORS.length - 1).split(',') %>
+                            <% for(index in collaborators) { %>
+                            <div class="form-row align-items-center">
+                                <div class="col-8 d-flex flex-column">
+                                    <span class="h4"><%= collaborators[index] %></span>
+                                </div>
+                                <div class="col-4 d-flex flex-column-reverse">
+                                    <button class="btn mb-2 removeCollaborator" data-collaborator="<%= collaborators[index] %>">
+                                        Remove<i class="fas fa-times ml-3"></i></button>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% } else{ %>
+                            <h5>none</h5>
+                            <% } %>
+                            <div class="row pt-3">
+                                <div class="col-md-6 mx-auto">
+                                    <button class="btn btn-primary btn-lg btn-block" id="applyBtn">Apply
+                                    </button>
+                                    <hr class="my-3">
+                                    <button class="btn btn-primary btn-lg btn-block" id="finish">Mark project as
+                                        Inactive
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+</div>
+
+<% include ../partials/footer.ejs %>
+<script src="/vendor/bootstrap-tagsinput/tagsinput.js"></script>
+
+<script>
+    $(function () {
+        let tagsInput = $('.bootstrap-tagsinput > input')[0];
+        $(tagsInput).on('change paste keyup', function () {
+            $(tagsInput).val($(tagsInput).val().replace(/"/g, '\''));
+        })
+    })
+    $('.removeCollaborator').on('click', function () {
+        $.ajax({
+            data: {
+                collaborator: $(this).data('collaborator'),
+                project_id: '<%- project.ID %>',
+                project_posts: '<%- project.COLLABORATORS %>'
+            },
+            type: 'POST',
+            url: '/projects/remove-member',
+            success: function (res) {
+                if (res.status === 'successful')
+                    window.location.reload();
+            }
+        });
+    })
+    $('#applyBtn').on('click', function () {
+        let e1 = document.getElementById("commitmentLevel");
+        let commitmentLevel = e1.options[e1.selectedIndex].text;
+        let e2 = document.getElementById("stage");
+        let Stage = e2.options[e2.selectedIndex].text;
+        let e3 = document.getElementById("budget");
+        let Budget = e3.options[e3.selectedIndex].text;
+        let hasFunding = document.getElementById("funding").checked;
+        project = {
+            name: document.getElementById("project_name").innerHTML,
+            BASE64: '<%-project.BASE64%>',
+            summary: document.getElementById("summary").value,
+            commitment: commitmentLevel,
+            platforms: JSON.stringify($("#platformsInput").tagsinput('items')),
+            resource_link: $('#resource_link').val(),
+            stage: Stage,
+            budget: Budget,
+            funding: hasFunding
+        };
+        console.log()
+        $.ajax({
+            data: project,
+            type: "POST",
+            url: "http://localhost:3000/projects/update",
+            success: function (res) {
+                console.log(res.status);
+                if (res.status === 'successful')
+                    window.location.href = '/projects/<%- project.BASE64 %>';
+                else alert(res.status);
+            }
+        });
+    });
+    $("#finish").on('click', function () {
+        $.ajax({
+            data: {
+                project_id: '<%- project.ID %>',
+                project_posts: '<%= project.COLLABORATORS%>',
+                project_founder: '<%= project.FOUNDER %>'
+            },
+            type: 'GET',
+            url: 'http://localhost:3000/projects/finish',
+            success: function (res) {
+                console.log(res.status);
+                if (res.status === 'successful')
+                    window.location.href = '/projects/<%- project.BASE64 %>';
+                else alert(res.status);
+            }
+        });
+    });
+</script>
+</body>
+</html>
