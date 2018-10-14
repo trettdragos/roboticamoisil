@@ -26,27 +26,22 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="jumbotron" style="margin-top: 10px;">
-                    <h2><b>Formulare creare postare forum</b></h2>
+                    <h2><b>Anunt</b></h2>
                     <div class="form-group">
-                        <label for="project Name">Nume Topic</label>
-                        <input type="text" class="form-control" id="teamName" placeholder="Enter team name">
+                        <label for="project Name">Titlu</label>
+                        <input type="text" class="form-control" id="teamName" placeholder="titlu">
                     </div>
                     <hr class="my-4">
                     <div class="form-group">
-                        <label for="comment">Descriere Topic</label>
-                        <small id="summarise" class="form-text text-muted"><i class="fas fa-info-circle mr-2"></i>orice</small>
+                        <label for="comment">Descriere</label>
+                        <small id="summarise" class="form-text text-muted"><i class="fas fa-info-circle mr-2"></i>Text Anunt</small>
                         <textarea class="form-control" rows="5" id="purpose"></textarea>
                     </div>
-                    <hr class="my-4">
-                    <div class="form-group">
-                        <h4 id="platform">Tags</h4>
-                        <div class="md-form">
-                            <input title="skills" type="text" id="platformsInput" class="form-control" data-role="tagsinput">
-                        </div>
-                    </div>
                 </div>
+                
+
                 <div class="jumbotron" style="margin-top: 10px;">
-                    <button class="btn btn-lg btn-block font-weight-bold" id="submit" type="button" style="font-size: 200%">Posteaza</button>
+                    <button class="btn btn-lg btn-block font-weight-bold" id="submit" type="button" style="font-size: 200%">Create</button>
                 </div>
             </div>
         </div>
@@ -86,8 +81,7 @@
         let team = {
             name: document.getElementById('teamName').value,
             summary: document.getElementById('purpose').value,
-            platforms: $("#platformsInput").tagsinput('items'),
-            leader: $.cookie('username')
+            postedBy: $.cookie('username')
         }
         let isFormOk = true;
         if (team.name === '') {
@@ -106,11 +100,11 @@
             $.ajax({
                 data: team,
                 type: 'GET',
-                url: 'http://localhost:3000/forum/register',
+                url: 'http://localhost:3000/anunturi/register',
                 success: function (res) {
                     console.log(res.status);
                     if (res.status === 'successful')
-                        window.location.href = '/forum';
+                        window.location.href = '/anunturi';
                     else alert(res.status);
                 }
             });

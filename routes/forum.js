@@ -9,23 +9,25 @@ let con = mysql.createConnection({
     database: "TeamFinder"
 });
 
-const posts_per_page = 25;
+const teams_per_page = 25;
 
-// router.get('/', function (req, res) {
-//     con.query("SELECT * FROM projects WHERE ACTIVE=1 ORDER BY TIMESTAMP DESC", function (err, projects, fields) {
-//         if (err) throw err;
-//         projects.forEach((project) => require('../other/security').convertUUIDToBase64(project.ID, (b64) => project.BASE64 = b64));
-//         con.query("SELECT * FROM teams WHERE ACTIVE=1 ORDER BY TIMESTAMP DESC", function (err, teams, fields) {
-//             if (err) throw err;
-//             teams.forEach((team) => require('../other/security').convertUUIDToBase64(team.ID, (b64) => team.BASE64 = b64));
-//             let list = teams.concat(projects);
-//             res.render('pages/forum.ejs', {email: req.cookies.username, tab: '1', posts: list, term: ''});
-//         });
-//     });
-// });
+router.get('/*', (req, res, next) => require('../other/security').routeTokenVerification(req, res, next));
 
 router.get('/', function (req, res) {
     res.redirect('/forum/page/1');
+    // if (req.cookies.username) {
+    //     con.query("SELECT * FROM teams WHERE ACTIVE=1  ORDER BY TIMESTAMP DESC", function (err, teams, fields) {
+    //         if (err) throw err;
+    //         teams.forEach((team) => {
+    //             team.PLATFORMS = team.PLATFORMS.replace(/\\'/g, '\\"');
+    //             require('../other/security').convertUUIDToBase64(team.ID, (b64) => team.BASE64 = b64);
+    //         });
+    //         res.render('pages/teams', {email: req.cookies.username, tab: '3', posts: teams, term: ''});
+    //     });
+    // }
+    // else {
+    //     res.redirect('/login');
+    // }
 });
 
 router.get('/page', (req, res) => {
@@ -38,24 +40,22 @@ router.get('/page/:num', (req, res) => {
         res.redirect('/forum/page/1');
         return;
     }
-    con.query("SELECT * FROM projects WHERE ACTIVE=1 ORDER BY TIMESTAMP DESC", function (err, projects, fields) {
-        if (err) throw err;
-        con.query("SELECT * FROM teams WHERE ACTIVE=1 ORDER BY TIMESTAMP DESC", function (err, teams, fields) {
+    if (req.cookies.username) {
+        con.query("SELECT * FROM forum ORDER BY TIMESTAMP DESC", function (err, teams, fields) {
             if (err) throw err;
-            let list = teams.concat(projects);
 
-            let last_page = projects.length / posts_per_page;
+            let last_page = teams.length / teams_per_page;
             if (last_page !== parseInt(last_page)) {
                 last_page = parseInt(last_page) + 1;
-            }
-            if(last_page === 0) {
-                last_page = 1;
             }
 
             if (current_page > last_page) {
                 res.redirect('/forum/page/' + last_page);
                 return;
             }
+            if (last_page === 0) {
+                last_page = 1;
+            }
 
             let start_page = current_page - 2;
             let end_page = current_page + 2;
@@ -66,10 +66,12 @@ router.get('/page/:num', (req, res) => {
                 start_page = last_page - 4;
                 end_page = last_page;
             }
-            if(start_page < 1)
+
+            if (start_page < 1)
                 start_page = 1;
-            if(end_page > last_page)
+            if (end_page > last_page)
                 end_page = last_page;
+
 
             let pages = {
                 current_page: current_page,
@@ -78,52 +80,67 @@ router.get('/page/:num', (req, res) => {
                 last_page: last_page
             };
 
-            loaded_posts = list.slice((current_page - 1) * posts_per_page, current_page * posts_per_page);
-            loaded_posts.forEach((post) => {
-                post.PLATFORMS = post.PLATFORMS.replace(/\\'/g, '\\"');
-                require('../other/security').convertUUIDToBase64(post.ID, (b64) => post.BASE64 = b64);
+            loaded_teams = teams.slice((current_page - 1) * teams_per_page, current_page * teams_per_page);
+            loaded_teams.forEach((team) => {
+                team.PLATFORMS = team.PLATFORMS.replace(/\\'/g, '\\"');
+                require('../other/security').convertUUIDToBase64(team.ID, (b64) => team.BASE64 = b64);
             });
 
             res.render('pages/forum.ejs', {
                 email: req.cookies.username,
                 tab: '4',
-                posts: loaded_posts,
+                posts: loaded_teams,
                 term: '',
                 pages: pages
             });
         });
-    });
+    }
+    else {
+        res.redirect('/login');
+    }
 });
 
-router.get('/:searchTerm', function (req, res) {
-    res.redirect(`/forum/${req.params.searchTerm}/page/1`);
+router.get('/create', function (req, res) {
+    if (req.cookies.username) {
+        res.render('pages/create-team', {tab: '4'});
+    }
+    else {
+        res.redirect('/login');
+    }
 });
 
-router.get('/:searchTerm/page', (req, res) => {
-    res.redirect(`/forum/${req.params.searchTerm}/page/1`);
+router.get('/search', function (req, res) {
+    res.redirect('/forum');
 });
 
-router.get('/:searchTerm/page/:num', function (req, res) {
+router.get('/search/:searchTerm', function (req, res) {
+    res.redirect(`/forum/search/${req.params.searchTerm}/page/1`);
+});
+
+router.get('/search/:searchTerm/page', (req, res) => {
+    res.redirect(`/forum/search/${req.params.searchTerm}/page/1`);
+});
+
+router.get('/search/:searchTerm/page/:num', (req, res) => {
     let current_page = parseInt(req.params.num);
     if (current_page < 1) {
-        res.redirect('/forum/'+req.params.searchTerm+'/page/1');
+        res.redirect('/forum/search/' + req.params.searchTerm + '/page/1');
         return;
     }
-    con.query("SELECT * FROM projects WHERE NAME LIKE ? ORDER BY TIMESTAMP DESC", [`%${req.params.searchTerm}%`], function (err, projects, fields) {
-        if (err) throw err;
-        con.query("SELECT * FROM teams WHERE NAME LIKE ? ORDER BY TIMESTAMP DESC", [`%${req.params.searchTerm}%`], function (err, teams, fields) {
+    if (req.cookies.username) {
+        con.query("SELECT * FROM forum WHERE NAME LIKE ? ORDER BY TIMESTAMP DESC", [`%${req.params.searchTerm}%`], function (err, teams, fields) {
             if (err) throw err;
-            let list = teams.concat(projects);
 
-            let last_page = projects.length / posts_per_page;
+            let last_page = teams.length / teams_per_page;
             if (last_page !== parseInt(last_page)) {
                 last_page = parseInt(last_page) + 1;
             }
-            if(last_page === 0) {
+            if (last_page === 0) {
                 last_page = 1;
             }
+
             if (current_page > last_page) {
-                res.redirect('/forum/'+req.params.searchTerm+'/page/' + last_page);
+                res.redirect('/forum/search/' + req.params.searchTerm + '/page/' + last_page);
                 return;
             }
 
@@ -137,6 +154,11 @@ router.get('/:searchTerm/page/:num', function (req, res) {
                 end_page = last_page;
             }
 
+            if (start_page < 1)
+                start_page = 1;
+            if (end_page > last_page)
+                end_page = last_page;
+
             let pages = {
                 current_page: current_page,
                 start_page: start_page,
@@ -144,20 +166,163 @@ router.get('/:searchTerm/page/:num', function (req, res) {
                 last_page: last_page
             };
 
-            loaded_posts = list.slice((current_page - 1) * posts_per_page, current_page * posts_per_page);
-            loaded_posts.forEach((post) => {
-                post.PLATFORMS = post.PLATFORMS.replace(/\\'/g, '\\"');
-                require('../other/security').convertUUIDToBase64(post.ID, (b64) => post.BASE64 = b64);
+            loaded_teams = teams.slice((current_page - 1) * teams_per_page, current_page * teams_per_page);
+            loaded_teams.forEach((team) => {
+                team.PLATFORMS = team.PLATFORMS.replace(/\\'/g, '\\"');
+                require('../other/security').convertUUIDToBase64(team.ID, (b64) => team.BASE64 = b64);
             });
 
             res.render('pages/forum.ejs', {
                 email: req.cookies.username,
                 tab: '4',
-                posts: loaded_posts,
+                posts: loaded_teams,
                 term: '',
                 pages: pages
             });
         });
+    }
+    else {
+        res.redirect('/login');
+    }
+});
+
+router.get('/register', function (req, res) {
+    team = req.query;
+    let platforms = [];
+    if (team.platforms) {
+        platforms = team.platforms;
+    }
+    require('../other/security').getUUID((uuid) => {
+        con.query("INSERT INTO forum (ID, TIMESTAMP, NAME, SUMMARY, PLATFORMS, LEADER) VALUES (?, ?, ?, ?, ?, ?)", [uuid, Date.now().toString(), team.name, team.summary, JSON.stringify(platforms), team.leader], function (err, result) {
+            if (err) {
+                socket.emit('register team', {status: JSON.stringify(err)});
+            }
+            res.send({status: "successful"});
+        })
+    });        
+});        
+
+router.post('/finish', function (req, res) {
+    debug.log(req.body);
+    let team = req.body;
+    con.query("UPDATE forum SET ACTIVE=0 WHERE ID=?", [team.team_id], function (err, result) {
+        if (err) throw err;
+        team.team_collaborators.substr(0, team.team_collaborators.length - 1).split(',').concat([team.team_founder]).forEach((user) => {
+            con.query("UPDATE accounts SET REPUTATION = REPUTATION + 2 WHERE EMAIL = ?", [user], (err, res) => {
+                if (err) throw err;
+            });
+        });
+        res.send({status: "successful"});
+    })
+});
+
+router.post('/update', function (req, res) {
+    team = req.body;
+    debug.log(team);
+    let platforms = [];
+    if (team.platforms) {
+        platforms = JSON.parse(team.platforms);
+    }
+    require('../other/security').convertBase64ToUUID(team.BASE64, (uuid) => {
+        con.query("UPDATE forum SET SUMMARY=?, RESOURCE_LINK=?, PLATFORMS=?, HACKATON=?, SECTION=?, START_DATE=?, END_DATE=? WHERE ID=?", [team.summary, team.resource_link, JSON.stringify(platforms), team.hackaton, team.section, team.startDate, team.endDate, uuid], function (err, result) {
+            if (err) throw err;
+            res.send({status: "successful"});
+        })
+    });
+});
+
+router.post('/remove-member', (req, res) => {
+    let members = req.body.team_posts.trim().substr(0, req.body.team_posts.length - 1).split(',');
+    con.query("UPDATE accounts SET REPUTATION = REPUTATION - 2 WHERE EMAIL = ?", [req.body.collaborator], function (err1, result1) {
+        if (err1) throw err1;
+        let index = members.indexOf(req.query.collaborator);
+        members.splice(index, 1);
+        let newMembers = '';
+        members.forEach((member) => newMembers += member + ',');
+        con.query('UPDATE forum SET POSTS = ? WHERE ID = ?', [newMembers, req.body.team_id], (err, result) => {
+            if (err) throw err;
+            res.send({status: 'successful'})
+        });
+    })
+});
+
+router.get('/:team', function (req, res) {
+    if (!req.cookies.username)
+        res.redirect('/login');
+
+    if (req.params.team == 'create')
+        return;
+    require('../other/security').convertBase64ToUUID(req.params.team, (uuid) => {
+        con.query("SELECT * FROM forum WHERE ID = ? LIMIT 1", [uuid], function (err, result, fields) {
+            if (err) throw err;
+            if (result[0]) {
+                result[0].BASE64 = req.params.team;
+                con.query("SELECT * FROM group_messages WHERE group_uuid = ?", [uuid], function (error, result2) {
+                    if (error) throw error;
+                    let options = {
+                        weekday: "long", year: "numeric", month: "short",
+                        day: "numeric", hour: "2-digit", minute: "2-digit",
+                        second: '2-digit', hour12: false
+                    };
+                    for (index in result2) {
+                        result2[index].timestamp = new Date(parseInt(result2[index].timestamp)).toLocaleTimeString("en-us", options);
+                    }
+                    //let people = result[0].POSTS.trim().substr(0, result[0].POSTS.trim().length - 1).split(',');
+                    //let list = '';
+                    //people.forEach((person) => {
+                    //    list += `\'${person}\', `
+                    //});
+                    //list = list.substr(0, list.length - 2);
+                    result[0].PLATFORMS = result[0].PLATFORMS.replace(/\\'/g, '\\"');
+                    res.render('pages/team-page', {
+                        email: req.cookies.username,
+                        uuid: req.cookies.uuid,
+                        tab: '4',
+                        team: result[0],
+                        messages: result2
+                    });
+                });
+            }
+            else {
+                res.render('pages/404.ejs', {
+                    message_main: "The team you're looking for does not exist (404)",
+                    message_redirect: `Click <a href=\"/teams\">here</a> to go back`,
+                    message_page: "Requested team: " + req.params.team
+                });
+            }
+        })
+    });
+});
+
+
+router.get('/edit/:team', function (req, res) {
+    if (!req.cookies.username)
+        res.redirect('/login');
+
+    require('../other/security').convertBase64ToUUID(req.params.team, (uuid) => {
+        con.query("SELECT * FROM forum WHERE ID = ? LIMIT 1", [uuid], function (err, result, fields) {
+            if (err) throw err;
+            if (result[0]) {
+                if (result[0].LEADER != req.cookies.username) {
+                    res.render('pages/404.ejs', {
+                        message_main: "You are not allowed to edit the team (403)",
+                        message_redirect: `Click <a href=\"/forum/${req.params.team}\">here</a> to go back`,
+                        message_page: "Requested team: " + req.params.team
+                    });
+                } else {
+                    result[0].BASE64 = req.params.team;
+                    result[0].PLATFORMS = result[0].PLATFORMS.replace(/\\'/g, '\\"');
+                    res.render('pages/edit-team', {email: req.cookies.username, tab: '3', team: result[0]});
+                }
+            }
+            else {
+                res.render('pages/404.ejs', {
+                    message_main: "The team you're looking for does not exist (404)",
+                    message_redirect: `Click <a href=\"/forum\">here</a> to go back`,
+                    message_page: "Requested team: " + req.params.team
+                });
+            }
+        })
     });
 });
 

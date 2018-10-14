@@ -178,105 +178,14 @@
                 <div class="card-body">
                     <h4 class="font-weight-bold" id="titleTeam"><%= team.NAME %></h4>
                     <hr class="my-4">
-                    <label for="comment">Team's Purpose</label>
+                    <label for="comment">Descriere</label>
                     <h5><%= team.SUMMARY %></h5>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-lg-6">
-                    <div class="card" style="height: 100%;">
-                        <div class="card-body">
-                            <h4 class="font-weight-bold">Hackaton - <%= team.HACKATON %></h4>
-                            <hr class="my-4">
-                            <%
-                            let joined = false;
-                            // console.log(team.POSTS.trim().substr(0, team.POSTS.length - 1).split(',').length);
-                            let participants = team.POSTS.trim().substr(0, team.POSTS.length - 1).split(',');
-                            if (participants.includes(email) || email == team.LEADER) joined = true
-                            %>
-                            <% if(team.RESOURCE_LINK && joined) { %>
-                            <label for="comment">Resource URL</label>
-                            <h5><a href="<%= team.RESOURCE_LINK %>" target="_blank"><%= team.RESOURCE_LINK %></a></h5>
-                            <% } %>
-                            <label for="comment">Section</label>
-                            <h5><%= team.SECTION %></h5>
-                            <!--`${('00' + d.getDate()).slice(-2)}/${('00' + (d.getMonth() + 1)).slice(-2)}/${d.getFullYear()}`-->
-                            <label for="comment">Start Date</label>
-                            <% let ds = new Date(parseInt(team.START_DATE)) %>
-                            <h5><%= `${('00' + ds.getDate()).slice(-2)}/${('00' + (ds.getMonth() + 1)).slice(-2)}/${ds.getFullYear()}` %></h5>
-                            <label for="comment">End Date</label>
-                            <% let de = new Date(parseInt(team.END_DATE)) %>
-                            <h5><%= `${('00' + de.getDate()).slice(-2)}/${('00' + (de.getMonth() + 1)).slice(-2)}/${de.getFullYear()}` %></h5>
-                            <label for="comment">Platforms</label><br>
+                    <label for="comment">Tags</label><br>
                             <% JSON.parse(team.PLATFORMS).forEach((platform) => { %>
                             <span class="tags teal"><%= platform %></span>
                             <% }) %>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-6">
-                    <div class="card" style="height: 100%;">
-                        <div class="card-body">
-                            <%
-                            let len = 1;
-                            if (team.POSTS)
-                                len += participants.length
-                            %>
-                            <h4 class="font-weight-bold">Number of current members: <%= len %></h4>
-                            <hr class="my-4">
-                            <label for="comment">Founder</label>
-                            <div class="card align-items-center my-2 profile-link" data-profile="<%= leader.EMAIL %>">
-                                <div class="card-body col-12 d-flex flex-column">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6 my-auto">
-                                            <h5><%= leader.USERNAME %></h5>
-                                            <h6><%= leader.EMAIL %></h6>
-                                            <h5>Reputation: <span class="<%if(leader.REPUTATION < 0) {%>red<%} else if(leader.REPUTATION == 0) {%>amber<% } else {%>green<%}%>-text"><%= leader.REPUTATION%></span></h5>
-                                        </div>
-                                        <div class="col-12 col-md-6 my-0 py-0" style="">
-                                            <img src="<% if(leader.PROFILE_PICTURE){ %> <%= leader.PROFILE_PICTURE %> <% } else { %>https://identicon-api.herokuapp.com/<%= leader.EMAIL %>/100?format=png<% } %>" alt="" class="" style="max-width: 100px; float: right;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <label for="comment">Other Members:</label>
-                            <% if(team.POSTS){ %>
-                            <% let collaborators = team.POSTS.trim().substr(0, team.POSTS.length - 1).split(',') %>
-                            <% for(index in accounts) { %>
-                            <div class="card align-items-center my-2 profile-link" data-profile="<%= accounts[index].EMAIL %>">
-                                <div class="card-body col-12 d-flex flex-column">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6 my-auto">
-                                            <h5><%= accounts[index].USERNAME %></h5>
-                                            <h6><%= accounts[index].EMAIL %></h6>
-                                            <h5>Reputation: <span class="<%if(accounts[index].REPUTATION < 0) {%>red<%} else if(accounts[index].REPUTATION == 0) {%>amber<% } else {%>green<%}%>-text"><%= accounts[index].REPUTATION%></span></h5>
-                                        </div>
-                                        <div class="col-12 col-md-6 my-0 py-0" style="">
-                                            <img src="<% if(accounts[index].PROFILE_PICTURE){ %> <%= accounts[index].PROFILE_PICTURE %> <% } else { %>https://identicon-api.herokuapp.com/<%= accounts[index].EMAIL %>/70?format=png<% } %>" alt="" class="" style="max-width: 100px; float: right;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <% } %>
-                            <% } else{ %>
-                            <h5>none</h5>
-                            <% } %>
-                        </div>
-                        <div class="card-footer">
-                            <% if (email != team.LEADER && team.ACTIVE && !joined) { %>
-                            <button class="my-3 btn btn-lg btn-block font-weight-bold" id="join">Join</button>
-                            <% } else if (team.ACTIVE && email == team.LEADER) { %>
-                            <a href="/teams/edit/<%= team.BASE64 %>" class="my-3 btn btn-lg btn-block font-weight-bold" id="editBtn">Edit
-                                Team</a>
-                            <% } else if(!team.ACTIVE){ %>
-                            <h5 class="font-weight-bold text-center">This team was marked as inactive<br> (no longer searching
-                                for participants)</h5>
-                            <% } %>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <% if(joined) { %>
             <div class="card my-5">
                 <div class="card-body">
                     <div class="chat w-100">
@@ -316,7 +225,6 @@
                     </div>
                 </div>
             </div>
-            <% } %>
         </div>
     </div>
 </div>
@@ -329,7 +237,7 @@
         second: '2-digit', hour12: false
     };
     let participants = posts.trim().substr(0, posts.length - 1).split(',');
-    if (participants.includes($.cookie('username')) || $.cookie('username') == '<%- team.LEADER %>') {
+    //if (participants.includes($.cookie('username')) || $.cookie('username') == '<%- team.LEADER %>') {
         let group_chat_socket = io.connect();
         group_chat_socket.emit('join room', {
             chat_name: '<%- team.ID %>',
@@ -395,7 +303,7 @@
             $('#message-to-send').val('');
         }
         document.getElementsByClassName('chat-history')[0].scrollTop = document.getElementsByClassName('chat-history')[0].scrollHeight;
-    }
+    //}
 
     $("#join").on('click', function () {
         let socket = io.connect();

@@ -6,7 +6,7 @@
 			socket.emit('receive email', {email:$.cookie('username')});
 		});
 		socket.on('notification', function(notification){
-			$.notify(notification, "info");
+			//$.notify(notification, "info");
 		});
 	}
 </script>

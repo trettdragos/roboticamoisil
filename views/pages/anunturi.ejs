@@ -80,27 +80,16 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-6">
-                            <h4 class="card-title display-6 font-weight-bold"> <%= posts[i].NAME %>
-                                <% if(posts[i].HACKATON){ %>
-                                - Hackaton
-                                <% }else{ %>
-                                - Project
-                                <% }%>
+                            <h4 class="card-title display-6 font-weight-bold"> <%= posts[i].TITLE %>
                             </h4>
                         </div>
                         <div class="col-6">
-                            <% for (j in JSON.parse(posts[i].PLATFORMS)) {%>
-                            <span style="float: right" class="tags teal ml-2 h5"><%= JSON.parse(posts[i].PLATFORMS).reverse()[j] %></span>
-                            <%}%>
+                            <span style="float: right" class="tags teal ml-2 h5">posted by <%= posts[i].POSTEDBY %></span>
                         </div>
                     </div>
                     <hr class="my-4">
-                    <h5><%= posts[i].SUMMARY %></h5>
-                    <%if (email) {%>
-                    <a href="/<% if(posts[i].HACKATON) { %>teams<% }else { %>projects<% } %>/<%= posts[i].BASE64 %>" style="color: #00e500" class="d-flex flex-row-reverse p-2">
-                        <p class="waves-effect waves-light px-4 py-3 z-depth-1-half" style="background-color: #343a40;"> Learn more<i class="fas fa-angle-double-right ml-2"></i></p>
-                    </a>
-                    <%}%>
+                    <h5><%= posts[i].TEXT %></h5>
+                    
                 </div>
             </div>
         </div>

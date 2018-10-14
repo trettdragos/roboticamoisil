@@ -83,7 +83,10 @@ router.get('/page/:num', (req, res) => {
                 post.PLATFORMS = post.PLATFORMS.replace(/\\'/g, '\\"');
                 require('../other/security').convertUUIDToBase64(post.ID, (b64) => post.BASE64 = b64);
             });
-
+            res.render('pages/orar.ejs', {
+                email: req.cookies.username,
+                tab: '3'
+            });
             res.render('pages/documente.ejs', {
                 email: req.cookies.username,
                 tab: '3',
