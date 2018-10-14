@@ -52,14 +52,14 @@ router.post('/auth', function (req, res) {
                                 // debug.log('ADDED SKILLS')
                             }
                             let profile = {
-                                "GITHUB": user.github,
-                                "LINKEDIN": user.linkedin,
+                                "GITHUB": "",
+                                "LINKEDIN": "",
                                 "SKILLS": skills,
-                                "ABOUT": "",
+                                "ABOUT": user.about,
                                 "PROFILE_PICTURE": ""
                             };
                             security.getUUID((uuid) => {
-                                con.query("INSERT INTO accounts (ID, USERNAME, EMAIL, PASSWORD, TYPE, PROFILE, CONFIRMED, NOTIFICATION) VALUES (?, ?, ?, ?, ?, ?, '0', '[]')", [uuid, user.name, user.email, hash, 'student', JSON.stringify(profile)], function (err, result) {
+                                con.query("INSERT INTO accounts (ID, USERNAME, EMAIL, PASSWORD, TYPE, PROFILE, CONFIRMED, NOTIFICATION) VALUES (?, ?, ?, ?, 'student', ?, '1', '[]')", [uuid, user.name, user.email, hash, JSON.stringify(profile)], function (err, result) {
                                     if (err) throw err;
                                     let email_template = require('../other/utils').activateAccountEmailTemplate;
                                     email_template = email_template.replace(new RegExp('{{LINK}}', 'g'), 'http://localhost:3000/verification/' + user.email);
