@@ -56,7 +56,6 @@
                             <label for="skillsInput">Skills</label>
                             <input type="text" id="skillsInput" class="form-control" data-role="tagsinput">
                         </div>
-                        <div class="g-recaptcha" data-sitekey="6LfoYGgUAAAAAI57MspAbR0DdLMxqGpqAHvg5syn"></div>
                         <button class="btn btn-lg btn-block btn-register" type="button" id="submit">
                             Register<i class="fas fa-user"></i></button>
                     </form>
@@ -74,9 +73,9 @@
 <script>
     let user = $.cookie('username');
     if (user) {
-        $('#list').append('<li class="nav-item"><a class="nav-link" href="/dashboard">Search <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/projects">Projects <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/settings">Settings <i class="fas fa-cogs"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a></li>');
+        $('#list').append('<li class="nav-item"><a class="nav-link" href="/anunturi">Anunturi <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/orar">Orar <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/documente">Documente <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/forum">Forum <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/profile">Profile <i class="fas fa-cogs"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a></li>');
     } else {
-        $('#list').append('<li class="nav-item"><a class="nav-link" href="/dashboard">Search <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/register">Sign Up <i class="fas fa-user-plus"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/login">Login <i class="fas fa-sign-in-alt"></i></a></li>');
+        $('#list').append('<li class="nav-item"><a class="nav-link" href="/anunturi">Anunturi <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/register">Inregistrare <i class="fas fa-user-plus"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/login">Conectare <i class="fas fa-sign-in-alt"></i></a></li>');
     }
 </script>
 <script src="/vendor/bootstrap-tagsinput/tagsinput.js"></script>
@@ -93,8 +92,7 @@
             password: document.getElementById("password").value,
             name: document.getElementById('fullName').value,
             skills: $("#skillsInput").tagsinput('items'),
-            about: document.getElementById('clasa').value+" "+document.getElementById('telefon').value+" "+document.getElementById("motiv").value,
-            grecaptcharesponse: grecaptcha.getResponse()
+            about: document.getElementById('clasa').value+" "+document.getElementById('telefon').value+" "+document.getElementById("motiv").value
         }
         console.log(user);
         $.ajax({
@@ -105,13 +103,6 @@
                 console.log(res.status);
                 if (res.status == "successful") {
                     window.location.href = '/login';
-                } else {
-                    grecaptcha.reset();
-                    if (res.status == 'recaptcha invalid') {
-                        $('.g-recaptcha').find('iframe').first().css('box-sizing', 'border-box').css('-moz-box-sizing', 'border-box').css('-webkit-box-sizing', 'border-box').css('border', '2px solid red');
-                    } else {
-                        document.getElementById("email").style.borderColor = "red";
-                    }
                 }
             }
         });

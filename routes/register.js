@@ -24,15 +24,6 @@ router.post('/auth', function (req, res) {
     user = req.body;
     debug.log(user);
     //https://www.google.com/recaptcha/api/siteverify
-    debug.log(user.grecaptcharesponse);
-    request(
-        'https://www.google.com/recaptcha/api/siteverify?secret=6LfoYGgUAAAAAFqy55ilTtFvaF4p0ShFVwPd3Iq2&response='+user.grecaptcharesponse+'&remoteip='+req.connection.remoteAddress,
-        function (error, response, body) {
-            body = JSON.parse(body);
-            if(body.success !== undefined && !body.success) {
-                debug.log(body);
-                res.send({status: "recaptcha invalid", email: user.email});
-            } else {
                 debug.log('recaptcha ok');
                 con.query("SELECT * FROM accounts WHERE EMAIL = ? LIMIT 1", [user.email], function (err, result, fields) {
                     if (err) throw err;
@@ -78,9 +69,7 @@ router.post('/auth', function (req, res) {
                         });
                     }
                 })
-            }
-        }
-    );
+            
 });
 
 
