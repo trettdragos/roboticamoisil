@@ -122,13 +122,11 @@ router.get('/:searchTerm/page/:num', function (req, res) {
         res.redirect('/anunturi/'+req.params.searchTerm+'/page/1');
         return;
     }
-    con.query("SELECT * FROM projects WHERE NAME LIKE ? ORDER BY TIMESTAMP DESC", [`%${req.params.searchTerm}%`], function (err, projects, fields) {
-        if (err) throw err;
-        con.query("SELECT * FROM teams WHERE NAME LIKE ? ORDER BY TIMESTAMP DESC", [`%${req.params.searchTerm}%`], function (err, teams, fields) {
+        con.query("SELECT * FROM anunturi WHERE TITLE LIKE ? ORDER BY TIME DESC", [`%${req.params.searchTerm}%`], function (err, teams, fields) {
             if (err) throw err;
-            let list = teams.concat(projects);
+            let list = teams;
 
-            let last_page = projects.length / posts_per_page;
+            let last_page = list.length / posts_per_page;
             if (last_page !== parseInt(last_page)) {
                 last_page = parseInt(last_page) + 1;
             }
@@ -158,9 +156,6 @@ router.get('/:searchTerm/page/:num', function (req, res) {
             };
 
             loaded_posts = list.slice((current_page - 1) * posts_per_page, current_page * posts_per_page);
-            loaded_posts.forEach((post) => {
-                require('../other/security').convertUUIDToBase64(post.ID, (b64) => post.BASE64 = b64);
-            });
 
             res.render('pages/anunturi.ejs', {
                 email: req.cookies.username,
@@ -170,7 +165,6 @@ router.get('/:searchTerm/page/:num', function (req, res) {
                 pages: pages
             });
         });
-    });
 });
 
 
