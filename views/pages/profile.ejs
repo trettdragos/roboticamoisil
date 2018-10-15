@@ -79,24 +79,6 @@
                             <% }) %>
                         </p>
                         <% } %>
-                        <% if (profile.GITHUB || profile.LINKEDIN) { %>
-                        <p><strong>Links: </strong>
-                            <% if(profile.GITHUB) { %>
-                            <span class="tags red"><a class="link-unstyled" href="<%= profile.GITHUB %>"
-                                                      target="_blank">GITHUB
-                                    <i class="fab fa-lg fa-github-square" style="font-weight: normal;"></i></a></span>
-                            <% } %>
-                            <% if(profile.LINKEDIN) { %>
-                            <span class="tags red"><a class="link-unstyled" href="<%= profile.LINKEDIN %>"
-                                                      target="_blank">LINKEDIN
-                                    <i class="fab fa-lg fa-linkedin" style="font-weight: normal;"></i></a></span>
-                            <% } %>
-                        </p>
-                        <% } %>
-
-                        <p><strong>Reputation: </strong>
-                            <span class="reputation <%if(reputation < 0) {%>red<%} else if(reputation == 0) {%>amber<% } else {%>green<%}%>-text"><%= reputation %></span>
-                        </p>
 
                     </div>
                     <div class="col-12 col-lg-5 order-1 order-sm-1 order-md-1 order-lg-11 text-center text-lg-right">
