@@ -45,21 +45,12 @@
                                             <label for="about">About</label>
                                         </div>
                                         <div class="md-form">
-                                            <i class="fab fa-github prefix"></i>
-                                            <input type="text" name="githubLink" id="githubLink" class="form-control form-control-lg" value="<%= profile.GITHUB %>">
-                                            <label for="githubLink">GitHub Link</label>
-                                        </div>
-                                        <div class="md-form">
-                                            <i class="fab fa-linkedin prefix"></i>
-                                            <input type="text" name="linkedinLink" id="linkedinLink" class="form-control form-control-lg" value="<%= profile.LINKEDIN %>">
-                                            <label for="linkedinLink">Linkedin Link</label>
-                                        </div>
-                                        <div class="md-form">
                                             <select title="skills" multiple id="skillsInput" name="skills" class="form-control" data-role="tagsinput">
                                                 <% profile.SKILLS.forEach((platform) => { %>
                                                 <option value="<%= platform %>"><%= platform %></option>
                                                 <% }) %>
                                             </select>
+                                            <label for="about">Skills</label>
                                         </div>
                                     </form>
                                 </div>
