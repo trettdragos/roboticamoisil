@@ -9,10 +9,10 @@
 <% include ../partials/login-register-header.ejs %>
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h4 style="text-align: center; margin-bottom: 15px;"><b>Login to Your Account</b></h4>
+                    <h4 style="text-align: center; margin-bottom: 15px;"><b>Conectare la cont</b></h4>
                     <form class="form-signin" id="form">
                         <p id="error" style="color: red;"></p>
                         <div class="form-group">
@@ -20,7 +20,7 @@
                             <input type="email" id="email" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="password">Password</label>
+                            <label for="password">Parola</label>
                             <input type="password" id="password" class="form-control" required>
                         </div>
                         <button class="btn btn-lg btn-block btn-signin" type="button" onclick="auth()" id="submit"> Login <i
@@ -28,10 +28,7 @@
                     </form>
                     <div class="row mt-2 text-center">
                         <div class="col-md-6 col-12">
-                            <small class="text-center text-muted">Don't have an account? <a href="/register" class="font-weight-bold link-unstyled">Register</a></small>
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <small class="text-center text-muted"><a href="/reset-password" class="font-weight-bold link-unstyled">Reset password</a></small>
+                            <small class="text-center text-muted">Nu ai cont? <a href="/register" class="font-weight-bold link-unstyled">Inregistrare</a></small>
                         </div>
                     </div>
                 </div>

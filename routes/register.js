@@ -45,7 +45,7 @@ router.post('/auth', function (req, res) {
                             let profile = {
                                 "GITHUB": "",
                                 "LINKEDIN": "",
-                                "SKILLS": skills,
+                                "SKILLS": user['skills[]'],
                                 "ABOUT": user.about,
                                 "PROFILE_PICTURE": ""
                             };

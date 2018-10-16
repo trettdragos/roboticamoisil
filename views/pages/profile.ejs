@@ -72,11 +72,9 @@
                         <% } %>
                         <p><strong>Email: </strong> <%= email %> </p>
 
-                        <% if (profile.SKILLS.length > 0) { %>
+                        <% if (profile["SKILLS"]) { %>
                         <p><strong>Skills: </strong>
-                            <% profile.SKILLS.forEach((skill) => { %>
-                            <span class="tags teal"><%= skill %></span>
-                            <% }) %>
+                            <span class="tags teal"><%= profile["SKILLS"] %></span> 
                         </p>
                         <% } %>
 
