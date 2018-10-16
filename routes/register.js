@@ -53,7 +53,7 @@ router.post('/auth', function (req, res) {
                                 con.query("INSERT INTO accounts (ID, USERNAME, EMAIL, PASSWORD, TYPE, PROFILE, CONFIRMED, NOTIFICATION) VALUES (?, ?, ?, ?, 'student', ?, '1', '[]')", [uuid, user.name, user.email, hash, JSON.stringify(profile)], function (err, result) {
                                     if (err) throw err;
                                     let email_template = require('../other/utils').activateAccountEmailTemplate;
-                                    email_template = email_template.replace(new RegExp('{{LINK}}', 'g'), 'http://localhost:3000/verification/' + user.email);
+                                    email_template = email_template.replace(new RegExp('{{LINK}}', 'g'), 'http://robotica.moisilbrasov.ro/verification/' + user.email);
                                     let msg = {
                                         to: user.email,
                                         from: 'register@hacksquad.com',

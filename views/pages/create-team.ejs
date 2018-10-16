@@ -106,7 +106,7 @@
             $.ajax({
                 data: team,
                 type: 'GET',
-                url: 'http://localhost:3000/forum/register',
+                url: '/forum/register',
                 success: function (res) {
                     console.log(res.status);
                     if (res.status === 'successful')

@@ -45,6 +45,8 @@ router.get('/page/:num', (req, res) => {
             if (err) throw err;
 
             let last_page = teams.length / teams_per_page;
+            if(last_page == 0)
+                last_page = 1;
             if (last_page !== parseInt(last_page)) {
                 last_page = parseInt(last_page) + 1;
             }
