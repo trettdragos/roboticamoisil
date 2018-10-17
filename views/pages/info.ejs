@@ -57,18 +57,6 @@
 
 <% include ../partials/footer.ejs %>
 <% include ../partials/socket-notification.ejs %>
-<script>
-    $('#city').empty();
-    $('#searchTerm').keypress(function (e) {
-        if (e.which == 13) {
-            window.location.href = '/anunturi/' + $("input").val();
-        }
-    });
-    $('#searchBtn').click(function () {
-        window.location.href = '/anunturi/' + $("input").val();
-    });
-
-</script>
 
 </body>
 
