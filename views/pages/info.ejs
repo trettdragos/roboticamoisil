@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <style type="text/css">
+        span.tags {
+            background: #ffffff;
+            border-radius: 2px;
+            color: #000;
+            font-weight: bold;
+            padding: 2px 4px;
+        }
+
+        span.tags.teal {
+            background: #1abc9c;
+            color: #f5f5f5
+        }
+    </style>
+</head>
+
+<body>
+<% if(!email){ %>
+<% include ../partials/dashboard-header.ejs %>
+<% } else { %>
+<% include ../partials/header.ejs %>
+<% } %>
+<div class="container" id="container">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="jumbotron" style="margin-top: 10px;">
+                <center>
+                    <p>În cadrul programului “Parteneriat Strategic pentru Educație”, Colegiul Național de Informatică ”Grigore Moisil” Brașov, Inspectoratul Școlar Județean Brașov, Universitatea Transilvania din Brașov prin Facultatea de Design de Produs și Mediu și companiile Miele Brașov, respectiv Siemens Industry Software organizează o amplă acțiune de colaborare intitulată</p>
+                    <hr class="my-4">
+                    <h2>Informatica, pasul tău spre lumea Mecatronicii - InfoTRON</h2>
+                    <hr class="my-4">
+                </center>
+                    <p>Scopul acestei colaborări îl constituie pregătirea extra curriculară a elevilor în vederea aplicării informaticii în conceperea, proiectarea, realizarea și implementarea sistemelor mecatronice – elemente de bază ale realității actuale ce deschid drumul către lumea de mâine.</p>
+                    <p>Proiectul se va desfășura în perioada 15.10.2018 – 30.01.2019 și va cuprinde următoarele etape:</p>
+                    <ul>
+                        <li>Sesiuni săptămânale de instruire pe grupe de vârstă asigurate de cadrele didactice ale Facultății de Design de Produs și Mediu, din Universitatea Transilvania din Brașov, împreună cu studenții programului de studii Mecatronică și membrii Clubului de Creativitate Studențească CreaTRON.</li>
+                        <li>În perioada 07.01.2018 – 24.01.2019 conceperea, proiectarea, realizarea și implementarea de către elevi a propriilor proiecte de sisteme mecatronice.</li>
+                        <li>În perioada 25.01.2019 – 29.01.2019 organizarea competițiilor în care cei mai buni elevi coordonați de studenți se vor întrece pentru a-și pune în valoare creativitatea și experiența acumulată în cadrul acestei colaborări.</li>
+                        <li>Festivitatea de premiere a câștigătorilor din data de 30 ianuarie 2019 va marca si evenimentul  de aniversare a 80 de ani de la infiintare a Colegiului Național de Informatică ”Grigore Moisil” Brașov ce se va desfășura în incinta Aulei Universității Transilvania din Brașov.</li>
+                    </ul>
+                    <hr class="my-4">
+                    <p>Instruirile se vor face pe kit-uri ce au la bază sisteme de dezvoltare cu microcontroller-e de tip Arduino și componente ce permit realizarea de aplicații cu grad de complexitate progresiv.</p>
+                    <p>Suportul material al acestei acțiuni este asigurat de către companiile Miele Brașov, respectiv Siemens Industry Software.</p>
+                    <hr class="my-4">
+                    <p>levii care doresc să participe la acest proiect se pot înscrie pe platforma <a href="http://mecatronica.moisilbrasov.ro/register"> http://mecatronica.moisilbrasov.ro/ </a><b> pana la data de 23.10.2019</b>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer.ejs %>
+<% include ../partials/socket-notification.ejs %>
+<script>
+    $('#city').empty();
+    $('#searchTerm').keypress(function (e) {
+        if (e.which == 13) {
+            window.location.href = '/anunturi/' + $("input").val();
+        }
+    });
+    $('#searchBtn').click(function () {
+        window.location.href = '/anunturi/' + $("input").val();
+    });
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <style type="text/css">
+        span.tags {
+            background: #ffffff;
+            border-radius: 2px;
+            color: #000;
+            font-weight: bold;
+            padding: 2px 4px;
+        }
+
+        span.tags.teal {
+            background: #1abc9c;
+            color: #f5f5f5
+        }
+    </style>
+</head>
+
+<body>
+<% if(!email){ %>
+<% include ../partials/dashboard-header.ejs %>
+<% } else { %>
+<% include ../partials/header.ejs %>
+<% } %>
+<div class="container" id="container">
+    page in construction
+</div>
+
+<% include ../partials/footer.ejs %>
+<% include ../partials/socket-notification.ejs %>
+<script>
+    $('#city').empty();
+    $('#searchTerm').keypress(function (e) {
+        if (e.which == 13) {
+            window.location.href = '/anunturi/' + $("input").val();
+        }
+    });
+    $('#searchBtn').click(function () {
+        window.location.href = '/anunturi/' + $("input").val();
+    });
+
+</script>
+
+</body>
+
+</html>

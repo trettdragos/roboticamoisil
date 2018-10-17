@@ -90,7 +90,7 @@ router.get('/page/:num', (req, res) => {
 
             res.render('pages/forum.ejs', {
                 email: req.cookies.username,
-                tab: '4',
+                tab: '6',
                 posts: loaded_teams,
                 term: '',
                 pages: pages
@@ -176,7 +176,7 @@ router.get('/search/:searchTerm/page/:num', (req, res) => {
 
             res.render('pages/forum.ejs', {
                 email: req.cookies.username,
-                tab: '4',
+                tab: '6',
                 posts: loaded_teams,
                 term: '',
                 pages: pages
@@ -279,7 +279,7 @@ router.get('/:team', function (req, res) {
                     res.render('pages/team-page', {
                         email: req.cookies.username,
                         uuid: req.cookies.uuid,
-                        tab: '4',
+                        tab: '6',
                         team: result[0],
                         messages: result2
                     });

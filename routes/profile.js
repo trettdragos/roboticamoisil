@@ -122,7 +122,7 @@ router.get('/:account_id', (req, res) => {
                         res.render('pages/profile', {
                             username: req.cookies.username,
                             // profile: "https://identicon-api.herokuapp.com/"+req.params.account_id+"/512?format=png",
-                            tab: '5',
+                            tab: '7',
                             name: result[0].USERNAME,
                             email: req.params.account_id,
                             type: result[0].TYPE,
@@ -155,7 +155,7 @@ router.get('/:account_id/chat', (req, res) => {
                 result2[index].timestamp = new Date(parseInt(result2[index].timestamp)).toLocaleTimeString("en-us", options);
             }
             res.render('pages/pm.ejs', {
-                tab: '5',
+                tab: '7',
                 email: req.cookies.username,
                 messages: result2,
                 uuid: req.cookies.uuid,
