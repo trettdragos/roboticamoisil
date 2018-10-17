@@ -44,13 +44,15 @@
                                             <input required type="text" name="about" id="about" class="form-control form-control-lg" value="<%= profile.ABOUT %>">
                                             <label for="about">About</label>
                                         </div>
+                                         <label for="about">Skills</label>
                                         <div class="md-form">
+
                                             <select title="skills" multiple id="skillsInput" name="skills" class="form-control" data-role="tagsinput">
-                                                <% profile.SKILLS.forEach((platform) => { %>
-                                                <option value="<%= platform %>"><%= platform %></option>
-                                                <% }) %>
+                                                <% if(profile["SKILLS"]) { %>
+                                                <option value='<%= profile["SKILLS"] %>'><%= profile["SKILLS"] %></option>
+                                                <% } %>
                                             </select>
-                                            <label for="about">Skills</label>
+                                           
                                         </div>
                                     </form>
                                 </div>
