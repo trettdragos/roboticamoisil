@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <style type="text/css">
+        span.tags {
+            background: #ffffff;
+            border-radius: 2px;
+            color: #000;
+            font-weight: bold;
+            padding: 2px 4px;
+        }
+
+        span.tags.teal {
+            background: #1abc9c;
+            color: #f5f5f5
+        }
+    </style>
+</head>
+
+<body>
+<div class="container" id="container">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="jumbotron" style="margin-top: 10px;">
+                    <table style="width:100%; border: 1px solid black;">
+                      <tr style="border: 1px solid black;">
+                        <th><h2>Clasa</h2></th>
+                        <th><h2>Numar</h2></th> 
+                      </tr>
+                      <tr style="border: 1px solid black;">
+                        <td>5</td>
+                        <td><%= stats['5'] %></td> 
+                      </tr>
+                      <tr style="border: 1px solid black;">
+                        <td>6</td>
+                        <td><%= stats['6'] %></td> 
+                      </tr>
+                      <tr style="border: 1px solid black;">
+                        <td>7</td>
+                        <td><%= stats['7'] %></td> 
+                      </tr>
+                      <tr style="border: 1px solid black;">
+                        <td>8</td>
+                        <td><%= stats['8'] %></td> 
+                      </tr>
+                      <tr style="border: 1px solid black;">
+                        <td>9</td>
+                        <td><%= stats['9'] %></td> 
+                      </tr>
+                      <tr style="border: 1px solid black;">
+                        <td>10</td>
+                        <td><%= stats['10'] %></td> 
+                      </tr>
+                      <tr style="border: 1px solid black;">
+                        <td>11</td>
+                        <td><%= stats['11'] %></td> 
+                      </tr>
+                      <tr style="border: 1px solid black;">
+                        <td>12</td>
+                        <td><%= stats['12'] %></td> 
+                      </tr>
+                      <tr style="border: 1px solid black;">
+                        <td>Altii</td>
+                        <td><%= other %></td> 
+                      </tr>
+                    </table>
+                    <h1>Numar total elevi <%= nr %></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
