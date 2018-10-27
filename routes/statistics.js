@@ -39,7 +39,7 @@ router.get('/', function (req, res) {
 			if(clasa !== '' && clasa !== '1')
 				stats[clasa] = stats[clasa]+1;
 		}
-		debug.log(stats);
+		//debug.log(stats);
 		let total = stats['5']+stats['6']+stats['7']+stats['8']+stats['9']+stats['10']+stats['11']+stats['12'];
 		res.render('pages/statistics', {
 			stats : stats,
