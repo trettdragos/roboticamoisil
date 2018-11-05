@@ -17,8 +17,8 @@ router.get('/', function (req, res) {
         res.render('pages/login.ejs');
 });
 
-router.get('/auth', function (req, res) {
-    user = req.query;
+router.post('/auth', function (req, res) {
+    user = req.body;
     con.query("SELECT * FROM accounts WHERE EMAIL = ? LIMIT 1", [user.email], function (err, result, fields) {
         if (err) throw err;
 
