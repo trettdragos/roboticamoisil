@@ -39,11 +39,15 @@ if (cluster.isMaster) {
         spawn(i);
     }
 
-    let worker_index = (ip, len) => {
-        return farmhash.fingerprint32(ip) % len;
+    let worker_index = function(ip, len) {
+        if(ip){
+            return farmhash.fingerprint32(ip+"1") % len;            
+        }
     };
 
     let server = net.createServer({pauseOnConnect: true}, (connection) => {
+        debug.log(connection.remoteAddress);
+        debug.log(connection.remoteFamily);
         let worker = workers[worker_index(connection.remoteAddress, num_processes)];
         worker.send('sticky-session:connection', connection);
     }).listen(port);
