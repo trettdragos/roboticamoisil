@@ -4,7 +4,6 @@ let mysql = require('mysql');
 
 router.get('/', function (req, res) {
     res.render('pages/materiale.ejs',{
-    	email: req.cookies.username,
         tab: '4'
     });
 });

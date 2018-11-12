@@ -25,8 +25,10 @@ const posts_per_page = 25;
 // });
 
 router.get('/', function (req, res) {
-    res.render('pages/documente.ejs');
-});
+res.render('pages/orar.ejs', {
+                email: req.cookies.username,
+                tab: '6'
+            });});
 
 router.get('/page', (req, res) => {
     res.redirect('/documente/page/1');
@@ -88,13 +90,6 @@ router.get('/page/:num', (req, res) => {
                 email: req.cookies.username,
                 tab: '6'
             });
-            res.render('pages/documente.ejs', {
-                email: req.cookies.username,
-                tab: '6',
-                posts: loaded_posts,
-                term: '',
-                pages: pages
-            });
         });
     });
 });
@@ -152,14 +147,6 @@ router.get('/:searchTerm/page/:num', function (req, res) {
             loaded_posts.forEach((post) => {
                 post.PLATFORMS = post.PLATFORMS.replace(/\\'/g, '\\"');
                 require('../other/security').convertUUIDToBase64(post.ID, (b64) => post.BASE64 = b64);
-            });
-
-            res.render('pages/documente.ejs', {
-                email: req.cookies.username,
-                tab: '6',
-                posts: loaded_posts,
-                term: '',
-                pages: pages
             });
         });
     });
