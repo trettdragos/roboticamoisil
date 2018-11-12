@@ -22,7 +22,7 @@ router.get('/edit', (req, res) => {
         // debug.log(db_res[0].PROFILE);
         res.render('pages/edit-profile.ejs', {
             username: req.cookies.username,
-            tab: '5',
+            tab: '8',
             name: db_res[0].USERNAME,
             profile: JSON.parse(db_res[0].PROFILE),
         })
@@ -122,7 +122,7 @@ router.get('/:account_id', (req, res) => {
                         res.render('pages/profile', {
                             username: req.cookies.username,
                             // profile: "https://identicon-api.herokuapp.com/"+req.params.account_id+"/512?format=png",
-                            tab: '7',
+                            tab: '8',
                             name: result[0].USERNAME,
                             email: req.params.account_id,
                             type: result[0].TYPE,

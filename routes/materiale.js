@@ -3,10 +3,10 @@ let router = express.Router();
 let mysql = require('mysql');
 
 router.get('/', function (req, res) {
-    res.render('pages/orar.ejs',{
+    res.render('pages/materiale.ejs',{
     	email: req.cookies.username,
-        tab: '5'
+        tab: '4'
     });
 });
 
-module.exports = {url: '/orar', router: router};
+module.exports = {url: '/materiale', router: router};

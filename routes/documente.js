@@ -25,7 +25,7 @@ const posts_per_page = 25;
 // });
 
 router.get('/', function (req, res) {
-    res.redirect('/documente/page/1');
+    res.render('pages/documente.ejs');
 });
 
 router.get('/page', (req, res) => {
@@ -86,11 +86,11 @@ router.get('/page/:num', (req, res) => {
             //change when ready
             res.render('pages/orar.ejs', {
                 email: req.cookies.username,
-                tab: '5'
+                tab: '6'
             });
             res.render('pages/documente.ejs', {
                 email: req.cookies.username,
-                tab: '5',
+                tab: '6',
                 posts: loaded_posts,
                 term: '',
                 pages: pages
@@ -156,7 +156,7 @@ router.get('/:searchTerm/page/:num', function (req, res) {
 
             res.render('pages/documente.ejs', {
                 email: req.cookies.username,
-                tab: '4',
+                tab: '6',
                 posts: loaded_posts,
                 term: '',
                 pages: pages

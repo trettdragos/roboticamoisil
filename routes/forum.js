@@ -90,7 +90,7 @@ router.get('/page/:num', (req, res) => {
 
             res.render('pages/forum.ejs', {
                 email: req.cookies.username,
-                tab: '6',
+                tab: '7',
                 posts: loaded_teams,
                 term: '',
                 pages: pages
@@ -176,7 +176,7 @@ router.get('/search/:searchTerm/page/:num', (req, res) => {
 
             res.render('pages/forum.ejs', {
                 email: req.cookies.username,
-                tab: '6',
+                tab: '7',
                 posts: loaded_teams,
                 term: '',
                 pages: pages
