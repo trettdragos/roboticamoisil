@@ -11,6 +11,7 @@
 <div class="container-fluid about-container-top elegant-gradient-lu-rd">
     <div class="row px-lg-0 px-sm-5 px-0 pt-0 pt-lg-4">
         <div class="col-xl-6 col-lg-8 col-12 mx-auto mt-0 mt-lg-5 ">
+            <br>
             <h1 class="d-none d-md-block mt-5 text-center text-white">Informatica, pasul tău spre lumea Mecatronicii - InfoTRON</h1>
             <h3 class="d-block d-md-none mt-5 text-center text-white">Informatica, pasul tău spre lumea Mecatronicii - InfoTRON</h3>
             <p class="d-none d-md-block lead text-justify text-white">Platforma oficiala pentru sesiunile de instruire si concursuri. Proiect realizat in parteneriat cu <a href="https://www.miele.ro/">Miele Brasov</a>, <a href="https://www.siemens.com/ro/ro/home.html">Siemens Industry Software</a>, <a href="https://dpm.unitbv.ro/">Universitatea Transilvania din Brasov prin Facultatea de Design de Produs si Mediu</a>, <a href="http://www.isjbrasov.ro/">Inspectoratul Scolar Judetean Brasov</a></p>
@@ -120,21 +121,21 @@
             800);
     });
 
-    let updateNavbar = () => {
+/*    let updateNavbar = () => {
         let startY = $('.about-container-top').height() - 55;
         if ($(window).scrollTop() > startY) {
             $('nav').addClass("bg-dark").removeClass('bg-transparent').removeClass('no-shadow');
         } else {
             $('nav').addClass("bg-transparent").removeClass('bg-dark').addClass('no-shadow');
         }
-    }
+    }*/
 </script>
 <script>
     let user = $.cookie('username');
     if (user) {
-        $('#list').append('<li class="nav-item"><a class="nav-link" href="/anunturi">Anunturi <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/info">Ce inseamna InfoTRON<i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/meca">De ce Mecatronica?<i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/orar">Orar <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/documente">Documente <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/forum">Forum <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/profile">Profile <i class="fas fa-cogs"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a></li>');
+        $('#list').append('<li class="nav-item"><a class="nav-link" href="/anunturi">Anunturi <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/info">Ce inseamna InfoTRON<i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/meca">De ce Mecatronica?<i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/materiale">Materiale <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/orar">Orar <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/documente">Documente <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/forum">Forum <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" href="/profile">Profile <i class="fas fa-cogs"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a></li>');
     } else {
-        $('#list').append('<li class="nav-item"><a class="nav-link" href="/anunturi">Anunturi <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/info">Ce inseamna InfoTRON<i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/meca">De ce Mecatronica?<i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/register">Inregistrare <i class="fas fa-user-plus"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/login">Conectare <i class="fas fa-sign-in-alt"></i></a></li>');
+        $('#list').append('<li class="nav-item"><a class="nav-link" href="/anunturi">Anunturi <i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/info">Ce inseamna InfoTRON<i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/meca">De ce Mecatronica?<i class="fas fa-home"></i></a></li><li class="nav-item"><a class="nav-link" href="/materiale">Materiale <i class="fas fa-user"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/register">Inregistrare <i class="fas fa-user-plus"></i></a></li><li class="nav-item"><a class="nav-link" id="logout" href="/login">Conectare <i class="fas fa-sign-in-alt"></i></a></li>');
     }
 </script>
 </body>
