@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head.ejs %>
+    <style type="text/css">
+        span.tags {
+            background: #ffffff;
+            border-radius: 2px;
+            color: #000;
+            font-weight: bold;
+            padding: 2px 4px;
+        }
+
+        span.tags.teal {
+            background: #1abc9c;
+            color: #f5f5f5
+        }
+    </style>
+</head>
+
+<body>
+<% if(!email){ %>
+<% include ../partials/dashboard-header.ejs %>
+<% } else { %>
+<% include ../partials/header.ejs %>
+<% } %>
+<div class="container" id="container">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="jumbotron" style="margin-top: 10px;">
+                
+                    <h2><span style="color: red">Te iubesc</span>?</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>      
+
+<% include ../partials/footer.ejs %>
+<% include ../partials/socket-notification.ejs %>
+</body>
+
+</html>
